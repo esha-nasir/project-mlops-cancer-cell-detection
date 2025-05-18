@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "brain-tumor-segmentation"
+version = "0.1.0"
+description = "Brain Tumor Cancer Segmentation"
+authors = ["esha Nasir <eshanasir@33gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8.10"
+torch = "2.0.1"  # pinned to 2.0.1 to ensure compatibility with Python 3.8
+monai = ">=0.8.0"
+wandb = "^0.15.0"
+numpy = "^1.23.0"
+tqdm = "^4.65.0"
+hydra-core = "^1.3.2"
+hydra-colorlog = "^1.2.0"
+omegaconf = "^2.3.0"
+pre-commit = "^3.3.0"
+black = "^23.3.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+nibabel = "<5.0"
+simpleitk = "<2.2.0"
+pillow = "9.5.0"
+psutil = "^7.0.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

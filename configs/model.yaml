@@ -1,0 +1,15 @@
+# @package _global_
+
+blocks_down: [1, 2, 2, 4]
+blocks_up: [1, 1, 1]
+init_filters: 16
+in_channels: 4
+out_channels: 3
+dropout_prob: 0.2
+
+dice_loss:
+  smoothen_numerator: 0
+  smoothen_denominator: 1e-5
+  squared_prediction: true
+  target_onehot: false
+  apply_sigmoid: true

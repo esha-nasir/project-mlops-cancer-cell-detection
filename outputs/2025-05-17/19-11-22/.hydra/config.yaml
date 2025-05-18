@@ -1,0 +1,46 @@
+batch_size: 1
+num_workers: 2
+roi_size:
+- 128
+- 128
+- 96
+pixdim:
+- 1.0
+- 1.0
+- 1.0
+max_train_images_visualized: 20
+max_val_images_visualized: 20
+blocks_down:
+- 1
+- 2
+- 2
+- 4
+blocks_up:
+- 1
+- 1
+- 1
+init_filters: 16
+in_channels: 4
+out_channels: 3
+dropout_prob: 0.2
+dice_loss:
+  smoothen_numerator: 0
+  smoothen_denominator: 1.0e-05
+  squared_prediction: true
+  target_onehot: false
+  apply_sigmoid: true
+wandb:
+  project: mipt-brain-tumor-segmentation
+  entity: null
+max_train_epochs: 50
+validation_intervals: 1
+initial_learning_rate: 0.0001
+weight_decay: 1.0e-05
+inference_roi_size:
+- 128
+- 128
+- 64
+seed: 42
+dataset_dir: ./dataset
+checkpoint_dir: ./checkpoints
+max_prediction_images_visualized: 10

@@ -1,0 +1,16 @@
+defaults:
+  - data
+  - model
+  - training
+  - _self_
+
+seed: 42
+dataset_dir: "./dataset"
+checkpoint_dir: "./checkpoints"
+
+dice_loss:
+  smoothen_numerator: 0
+  smoothen_denominator: 1e-05
+  squared_prediction: True
+  target_onehot: False
+  apply_sigmoid: True
