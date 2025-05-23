@@ -23,6 +23,7 @@ nibabel = "<5.0"
 simpleitk = "<2.2.0"
 pillow = "9.5.0"
 psutil = "^7.0.0"
+dvc = "<3.59.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.3.0"
