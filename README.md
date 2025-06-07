@@ -1,4 +1,4 @@
-## Brain Tumor Segmentation
+## Brain Tumor Cancer Cell Segmentation
 
 ###  Overview
 
@@ -14,7 +14,7 @@ It uses the BraTS dataset and includes:
 * **Data**: DVC with Google Drive
 * **Logging**: MLflow + Weights & Biases (W\&B)
 * **Deployment**: Triton Inference Server (ONNX/TensorRT)
-* **Cloud**: Fly.io for inference
+* **Cloud**: Railway-app for inference(Clean UI, supports Dockerfile builds)
 
 ---
 
