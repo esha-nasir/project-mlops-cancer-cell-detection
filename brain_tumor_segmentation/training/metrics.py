@@ -1,12 +1,13 @@
-from monai.metrics import DiceMetric
 from monai.losses import DiceLoss
-import torch
+from monai.metrics import DiceMetric
+
 
 def get_dice_metrics() -> tuple:
     """Return initialized dice metrics."""
     dice_metric = DiceMetric(include_background=True, reduction="mean")
     dice_metric_batch = DiceMetric(include_background=True, reduction="mean_batch")
     return dice_metric, dice_metric_batch
+
 
 def get_dice_loss(config) -> DiceLoss:
     """Return configured Dice loss."""
@@ -18,9 +19,11 @@ def get_dice_loss(config) -> DiceLoss:
         sigmoid=config.dice_loss.apply_sigmoid,
     )
 
+
 def get_postprocessing_transforms() -> tuple:
     """Return postprocessing transforms for inference."""
-    from monai.transforms import Compose, Activations, AsDiscrete
+    from monai.transforms import Activations, AsDiscrete, Compose
+
     post_trans = Compose([Activations(sigmoid=True), AsDiscrete(threshold=0.5)])
-    print("000000000000------------>",post_trans)
+    print("000000000000------------>", post_trans)
     return post_trans
