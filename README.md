@@ -63,6 +63,9 @@ It uses the BraTS dataset and includes:
    pre-commit install
    pre-commit run -a
    ```
+   Note: Run the pre-commit run -a twice, because black, isort, modify the files in place during the first run.
+![git-commit](https://github.com/user-attachments/assets/9571dc1c-3dc4-41d2-aabf-0f5340762222)
+
 
 4. **DVC + Google Drive**
 
