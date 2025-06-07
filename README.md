@@ -190,6 +190,9 @@ Further following is the prediction
 
 ![W B Chart 07_06_2025, 18_02_46](https://github.com/user-attachments/assets/70d1f406-1e60-4626-b1f7-b875cea663b2)
 
+## Note: 
+I implemented both MLflow and WandB.ai, but as the project progressed, I found WandB more user-friendly. The plots I have shared are from the WandB.ai dashboard.
+
 
 
 
