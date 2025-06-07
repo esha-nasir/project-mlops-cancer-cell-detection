@@ -14,3 +14,13 @@ dice_loss:
   squared_prediction: True
   target_onehot: False
   apply_sigmoid: True
+
+in_channels: 4
+roi_size: [128, 128, 128]
+pixdim: [1.0, 1.0, 1.0]
+
+export:
+  checkpoint_path: "./checkpoints/model.pth"
+  onnx_output_path: "model.onnx"
+  tensorrt_output_path: "model.trt"
+  opset_version: 11
