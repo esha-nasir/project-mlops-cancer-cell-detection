@@ -184,7 +184,8 @@ Further following is the prediction
 
 ![W B Chart 07_06_2025, 18_00_18](https://github.com/user-attachments/assets/4c13e7c4-2463-406d-a7d6-61c40c985ba2)
 
-![W B Chart 07_06_2025, 18_01_06](https://github.com/user-attachments/assets/00cc7cb4-24df-42a0-afe2-5e2792a15293)
+
+![W B Chart 07_06_2025, 18_02_46](https://github.com/user-attachments/assets/70d1f406-1e60-4626-b1f7-b875cea663b2)
 
 
 
