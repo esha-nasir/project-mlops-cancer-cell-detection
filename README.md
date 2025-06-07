@@ -174,3 +174,11 @@ poetry run python scripts/infer.py
 Further following is the prediction
 ![prediction](https://github.com/user-attachments/assets/9d7e396d-1630-4b07-a514-0daa1614a5ed)
 
+## Plots - W&B 
+## Batch/Train Loss 
+![W B Chart 07_06_2025, 17_47_01](https://github.com/user-attachments/assets/6058470d-043c-44ef-8ced-3bcc479d52b9)
+
+
+
+
+
