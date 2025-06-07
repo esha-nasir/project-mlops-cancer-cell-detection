@@ -7,8 +7,8 @@ ENV MODEL_REPOSITORY=/models
 # Create model repository directory
 RUN mkdir -p ${MODEL_REPOSITORY}
 
-# Copy local models into the container
-COPY triton_models/ ${MODEL_REPOSITORY}
+# Copy local models into the container - fix the path here
+COPY brain_tumor_segmentation/triton_models/ ${MODEL_REPOSITORY}
 
 # Expose Triton's ports
 EXPOSE 8000 8001 8002
