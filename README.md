@@ -187,14 +187,3 @@ Further following is the prediction
 
 
 ![W B Chart 07_06_2025, 18_02_46](https://github.com/user-attachments/assets/70d1f406-1e60-4626-b1f7-b875cea663b2)
-
-## Note: 
-I implemented both MLflow and WandB.ai, but as the project progressed, I found WandB more user-friendly. The plots I have shared are from the WandB.ai dashboard.
-## Deployment: 
-For the deployment in Railway.app there are two major steps create file DockerFile and check the folder structure in my case triton_models should contain model.trt file the exported file from tensorRT should be correctly specified and also noted that Triton's official image is hosted on nvcr.io or ghcr.io,
-these registries (especially ghcr.io) sometimes block access in certain regions so we have to rehost the image on Docker Hub, in this project i did following steps
-docker pulling docker pull nvcr.io/nvidia/tritonserver:24.03-py3
-tagged with docker hub
-docker tag nvcr.io/nvidia/tritonserver:24.03-py3 eshanasir/tritonserver:24.03-py3
-and pushed it back to the docker hub
-docker push {eshanasir}/tritonserver:24.03-py3, here eshanasir is my username you have to write yours
