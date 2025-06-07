@@ -1,63 +1,69 @@
 #!/usr/bin/env python
 import os
-import sys
 from pathlib import Path
 
-# Add project root to Python path
-
 import hydra
-from omegaconf import DictConfig,OmegaConf
+import pytorch_lightning as pl
 import torch
-
 from monai.data import DataLoader
-from monai.transforms import Compose, Activations, AsDiscrete
+from omegaconf import DictConfig, OmegaConf
+from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.loggers import WandbLogger as PLWandbLogger
 
-# Updated imports to match new structure
-from brain_tumor_segmentation.data.dataset import get_datasets
+from brain_tumor_segmentation.data.dataset import download_data, get_datasets
 from brain_tumor_segmentation.data.transforms import (
-    get_train_transforms, 
-    get_val_transforms
+    get_train_transforms,
+    get_val_transforms,
 )
-from brain_tumor_segmentation.training.metrics import get_postprocessing_transforms
-from brain_tumor_segmentation.models.segresnet import get_model
 from brain_tumor_segmentation.training.trainer import Trainer
-from brain_tumor_segmentation.utils.visualization import log_data_samples
 from brain_tumor_segmentation.utils.logger import WandBLogger
+from brain_tumor_segmentation.utils.visualization import log_data_samples
+
+# Use absolute path for config to avoid Windows path issues
+CONFIG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "configs"))
 
 
-
-    
-@hydra.main(version_base="1.3", config_path="../configs", config_name="config")
+@hydra.main(version_base="1.3", config_path=CONFIG_PATH, config_name="config")
 def main(cfg: DictConfig):
-    # Print full config for debugging
+    # Debug: Print full configuration
+    print("Full configuration:")
     print(OmegaConf.to_yaml(cfg))
-    
-    # Access config values properly
-    print("Training epochs:", cfg.max_train_epochs)
-    print("Batch size:", cfg.batch_size)
-    
-    # Initialize W&B with proper config access
-    logger = WandBLogger(cfg)
-    
+
+    # Warn if 'training' key is missing
+    if "training" not in cfg:
+        print(
+            "Warning: 'training' key missing in configuration. Using default wandb settings."
+        )
+        wandb_config = {}
+    else:
+        wandb_config = cfg.training.get("wandb", {})
+
     # Set random seed
     torch.manual_seed(cfg.seed)
-    
+
     # Create directories
     os.makedirs(cfg.dataset_dir, exist_ok=True)
     os.makedirs(cfg.checkpoint_dir, exist_ok=True)
-    
-    # Get transforms - Updated to use new functions
+
+    # Download data using DVC
+    download_data(cfg)
+
+    # Get transforms
     train_transform = get_train_transforms(cfg)
     val_transform = get_val_transforms(cfg)
-    post_trans = get_postprocessing_transforms()
-    
+
     # Get datasets
     train_dataset, val_dataset = get_datasets(cfg, train_transform, val_transform)
-    
+
+    # Initialize logger with default values
+    project = wandb_config.get("project", "mipt-brain-tumor-segmentation")
+    entity = wandb_config.get("entity", None)
+    wandb_logger = PLWandbLogger(project=project, entity=entity, config=dict(cfg))
+    logger = WandBLogger(cfg)
+
     # Log sample data
     log_data_samples(train_dataset, val_dataset, cfg)
-    print(">>>>>>>>>>>>>>>>>>",cfg.batch_size)
-    # Training loop
+
     # Create data loaders
     train_loader = DataLoader(
         train_dataset,
@@ -65,45 +71,47 @@ def main(cfg: DictConfig):
         shuffle=True,
         num_workers=cfg.num_workers,
     )
-    print("Data Load-------------",train_loader)
     val_loader = DataLoader(
         val_dataset,
         batch_size=cfg.batch_size,
         shuffle=False,
         num_workers=cfg.num_workers,
     )
-    
-    # Get device
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    
-    # Get model
-    model = get_model(cfg).to(device)
-    
-    # Create trainer
-    trainer = Trainer(model, device, cfg)
-    print(">>>>>>>>>>>>>>>>>>",cfg.max_train_epochs)
-    # Training loop
-    for epoch in range(cfg.max_train_epochs):
-        # Train for one epoch
-        train_loss = trainer.train_epoch(train_loader, epoch)
-        
-        # Log metrics
-        logger.log_metrics({
-            "mean_train_loss": train_loss,
-            "learning_rate": trainer.lr_scheduler.get_last_lr()[0]  # Fixed reference
-        }, step_type="epoch")
 
-        # Validate
-        if (epoch + 1) % cfg.validation_intervals == 0:
-            val_metric = trainer.validate(val_loader, post_trans, epoch)
-            
-            # Save checkpoint
-            checkpoint_path = os.path.join(cfg.checkpoint_dir, "model.pth")
-            trainer.save_checkpoint(checkpoint_path)
-            logger.log_model_checkpoint(model, epoch)
-    
+    # Initialize model
+    model = Trainer(cfg)
+
+    # Define checkpoint callback
+    checkpoint_callback = ModelCheckpoint(
+        dirpath=cfg.checkpoint_dir,
+        filename="model-{epoch:02d}-{validation/mean_dice:.4f}",
+        monitor="validation/mean_dice",
+        mode="max",
+        save_top_k=1,
+    )
+
+    # Initialize trainer
+    trainer = pl.Trainer(
+        max_epochs=cfg.max_train_epochs,
+        accelerator="gpu" if torch.cuda.is_available() else "cpu",
+        devices=1,
+        logger=wandb_logger,
+        callbacks=[checkpoint_callback],
+        val_check_interval=cfg.validation_intervals,
+    )
+
+    # Train model
+    trainer.fit(model, train_loader, val_loader)
+
+    # Log final model as MLflow artifact
+    logger.log_model_artifact(
+        str(Path(cfg.checkpoint_dir) / "model.pth"), "final_model"
+    )
+
     # Finish W&B run
+    wandb_logger.finalize("success")
     logger.finish()
+
 
 if __name__ == "__main__":
     main()
