@@ -1,4 +1,4 @@
-## 6 Brain Tumor Segmentation
+## Brain Tumor Segmentation
 
 ###  Overview
 
