@@ -2,13 +2,14 @@
 name = "brain-tumor-segmentation"
 version = "0.1.0"
 description = "Brain Tumor Cancer Segmentation"
-authors = ["esha Nasir <eshanasir@33gmail.com>"]
+authors = ["Esha Nasir <eshanasir@33gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8.10"
-torch = "2.0.1"  # pinned to 2.0.1 to ensure compatibility with Python 3.8
+python = "3.8.10"
+torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.0.0%2Bcpu-cp38-cp38-linux_x86_64.whl" }
 monai = ">=0.8.0"
+pytorch-lightning = "2.0.9"
 wandb = "^0.15.0"
 numpy = "^1.23.0"
 tqdm = "^4.65.0"
@@ -24,10 +25,15 @@ simpleitk = "<2.2.0"
 pillow = "9.5.0"
 psutil = "^7.0.0"
 dvc = "<3.59.2"
+geventhttpclient = "2.0.2"
+mlflow = "^2.4.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
