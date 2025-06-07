@@ -1,0 +1,19 @@
+name: "brain_tumor_model"
+platform: "onnxruntime_onnx"
+max_batch_size: 0
+
+input [
+  {
+    name: "input"
+    data_type: TYPE_FP32
+    dims: [4, 128, 128, 128]
+  }
+]
+
+output [
+  {
+    name: "output"
+    data_type: TYPE_FP32
+    dims: [3, 128, 128, 128]
+  }
+]
