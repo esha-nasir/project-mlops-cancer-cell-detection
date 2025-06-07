@@ -177,6 +177,17 @@ Further following is the prediction
 ## Plots - W&B 
 ## Batch/Train Loss 
 ![W B Chart 07_06_2025, 17_47_01](https://github.com/user-attachments/assets/6058470d-043c-44ef-8ced-3bcc479d52b9)
+## At Validation Log Mean_dice at different Stages
+![W B Chart 07_06_2025, 17_57_22](https://github.com/user-attachments/assets/58beaca4-3e47-46cb-a3ef-e9ce9dc674fe)
+
+![W B Chart 07_06_2025, 17_59_44](https://github.com/user-attachments/assets/703c4638-bf93-40df-85ce-fc66569d1ddc)
+
+![W B Chart 07_06_2025, 18_00_18](https://github.com/user-attachments/assets/4c13e7c4-2463-406d-a7d6-61c40c985ba2)
+
+![W B Chart 07_06_2025, 18_01_06](https://github.com/user-attachments/assets/00cc7cb4-24df-42a0-afe2-5e2792a15293)
+
+
+
 
 
 
