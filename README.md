@@ -144,6 +144,43 @@ poetry run python scripts/server.py
 poetry run python scripts/infer.py
 ```
 
+## Inference: `infer.py`
+
+The `infer.py` script is used to evaluate a trained brain tumor segmentation model on the validation dataset.
+
+###  Workflow Summary
+
+1. **Configuration & Setup**
+   - Loads settings via Hydra (`config.yaml`)
+   - Sets the random seed for reproducibility
+
+2. **Data Loading**
+   - Downloads validation data using DVC
+   - Applies validation-time transforms
+   - Initializes the validation DataLoader
+
+3. **Model Initialization**
+   - Loads the specified model architecture (e.g., SegResNet)
+   - Loads pretrained weights from `model.pth`
+   - Transfers the model to the appropriate device (GPU or CPU)
+
+4. **Inference & Post-processing**
+   - Performs forward pass on each validation sample
+   - Applies post-processing (e.g., argmax, thresholding)
+   - Computes evaluation metrics: Dice Score & Hausdorff Distance (HD95)
+
+5. **Metrics Logging**
+   - Aggregates Dice & HD95 metrics across the dataset
+   - Prints per-class metrics (Whole Tumor, Tumor Core, Enhancing Tumor)
+   - Logs metrics to Weights & Biases (W&B) and MLflow
+
+### Output
+- Validation metrics printed to console
+- Metrics logged to experiment tracking tools (W&B, MLflow)
+
+> Ensure the checkpoint file `model.pth` exists in `cfg.checkpoint_dir` before running inference.
+
+
 ---
 
 ###  Data Management
