@@ -88,6 +88,60 @@ It uses the BraTS dataset and includes:
 poetry run python scripts/train.py
 ```
 
+## Training: `train.py`
+
+The `train.py` script handles end-to-end training of the brain tumor segmentation model using PyTorch Lightning and MONAI.
+
+---
+
+### Workflow Summary
+
+1. **Configuration & Setup**
+   - Loads settings via Hydra from `config.yaml`
+   - Creates necessary directories for dataset and checkpoints
+   - Sets random seed for reproducibility
+
+2. **Data Loading**
+   - Downloads the dataset using DVC
+   - Applies training and validation transforms
+   - Loads training and validation datasets via MONAI
+
+3. **Logging**
+   - Initializes [Weights & Biases (W&B)](https://wandb.ai/) logger
+   - Optionally logs visual samples from the datasets
+
+4. **Model Preparation**
+   - Initializes the segmentation model using a custom `Trainer` class
+   - Wraps the model with PyTorch Lightning for structured training
+
+5. **Training Setup**
+   - Configures model checkpointing (best by validation Dice score)
+   - Sets training parameters (epochs, device, validation intervals, etc.)
+
+6. **Training Loop**
+   - Starts training using `trainer.fit(...)`
+   - Periodically evaluates on the validation set
+   - Saves best model checkpoint automatically
+
+7. **Post-training**
+   - Logs the best model as an MLflow artifact
+   - Finalizes W&B run
+
+---
+
+### Output
+
+- Trained model checkpoint saved in `cfg.checkpoint_dir`
+- Metrics and visual logs tracked in W&B dashboard
+- Final model saved as `model.pth` and optionally logged to MLflow
+
+---
+
+>  **Note:** Before training, ensure DVC is initialized and datasets are accessible. Adjust training parameters in `config.yaml` as needed.
+
+
+
+
 **Includes**:
 
 * DVC-pulled data
