@@ -281,6 +281,7 @@ tagged with docker hub
 docker tag nvcr.io/nvidia/tritonserver:24.03-py3 eshanasir/tritonserver:24.03-py3
 and pushed it back to the docker hub
 docker push {eshanasir}/tritonserver:24.03-py3, here eshanasir is my username you have to write yours
+### There might be a possible reason why the app fails in production. It could be due to the free plan, which only provides 4GB of memory. Additionally, I couldn't access the required service because of region restrictions. Apart from this, everything is working fine. I have already explained the step-by-step approach for the deployment above.
 
 
 ![W B Chart 07_06_2025, 17_59_44](https://github.com/user-attachments/assets/703c4638-bf93-40df-85ce-fc66569d1ddc)
