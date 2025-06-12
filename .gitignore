@@ -68,8 +68,8 @@ checkpoints/
 *.json
 
 # DVC
-.dvc/
-.dvc_temp/
+#.dvc/
+#.dvc_temp/
 
 # IDE
 .vscode/
